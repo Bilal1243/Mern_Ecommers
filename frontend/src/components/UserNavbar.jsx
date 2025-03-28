@@ -1,8 +1,5 @@
 import React from "react";
-import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
+import { Container, Nav, Navbar, Button } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useLogoutUserMutation } from "../slices/userApiSlice";
 import { logout } from "../slices/authSlice";
@@ -10,44 +7,54 @@ import { useDispatch } from "react-redux";
 
 function UserNavbar() {
   const [logoutUser] = useLogoutUserMutation();
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const logoutHandler = async () => {
     try {
       await logoutUser().unwrap();
-
       dispatch(logout());
+      navigate("/login");
     } catch (error) {
       console.log(error);
     }
   };
 
   return (
-    <>
-      <Navbar expand="lg" className="bg-body-tertiary">
-        <Container>
-          <Navbar.Brand href="#home">Ecommers</Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="ms-auto p-3">
-              <Link to={"/"} className="me-3">
-                Home
-              </Link>
-              <Link to={"/products"} className="me-3">
-                products
-              </Link>
-              <Link to={"/user/cart"} className="me-3">
-                Cart
-              </Link>
+    <Navbar expand="lg" className="bg-white shadow-sm py-3">
+      <Container>
+        {/* Brand */}
+        <Navbar.Brand as={Link} to="/" className="fw-bold fs-4 text-primary">
+          Ecommers
+        </Navbar.Brand>
 
-              <Link onClick={() => logoutHandler()}>Logout</Link>
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
-    </>
+        {/* Toggle Button for Mobile */}
+        <Navbar.Toggle aria-controls="navbar-nav" />
+
+        <Navbar.Collapse id="navbar-nav">
+          <Nav className="ms-auto d-flex align-items-center">
+            <Nav.Link as={Link} to="/" className="mx-2 fw-semibold">
+              Home
+            </Nav.Link>
+            <Nav.Link as={Link} to="/products" className="mx-2 fw-semibold">
+              Products
+            </Nav.Link>
+            <Nav.Link as={Link} to="/user/cart" className="mx-2 fw-semibold">
+              Cart
+            </Nav.Link>
+
+            {/* Logout Button */}
+            <Button
+              variant="outline-danger"
+              className="rounded-pill px-3 mx-2 fw-semibold"
+              onClick={logoutHandler}
+            >
+              Logout
+            </Button>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
   );
 }
 

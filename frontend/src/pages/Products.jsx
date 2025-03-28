@@ -1,49 +1,63 @@
 import React from "react";
 import UserNavbar from "../components/UserNavbar";
-import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import { Button, Card, Container, Row, Col } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useGetProductsQuery } from "../slices/userApiSlice";
 
 function Products() {
   const { data: products } = useGetProductsQuery();
-
   const navigate = useNavigate();
 
   return (
     <>
       <UserNavbar />
-      <Container className="my-4">
-        <h2 className="text-center mb-4">Our Products</h2>
+      <Container className="my-5">
+        <h2 className="text-center fw-bold mb-4">Explore Our Products</h2>
         <Row className="g-4">
           {products?.map((product) => (
             <Col key={product._id} xs={12} sm={6} md={4} lg={3}>
-              <Card className="shadow-sm h-100">
-                <Card.Img
-                  variant="top"
-                  src={product.productImage}
-                  className="img-fluid"
-                  style={{ height: "200px", objectFit: "cover" }}
-                />
+              <Card
+                className="border rounded-3 shadow-sm h-100 p-3"
+                style={{
+                  transition: "transform 0.2s, box-shadow 0.2s",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.transform = "scale(1.03)")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.transform = "scale(1)")
+                }
+              >
+                <div className="overflow-hidden rounded">
+                  <Card.Img
+                    variant="top"
+                    src={product.productImage}
+                    className="img-fluid"
+                    style={{
+                      height: "220px",
+                      objectFit: "cover",
+                    }}
+                  />
+                </div>
                 <Card.Body className="d-flex flex-column">
-                  <Card.Title
-                    className="text-truncate"
-                    title={product.productName}
-                  >
+                  <Card.Title className="fw-bold text-truncate" title={product.productName}>
                     {product.productName}
                   </Card.Title>
-                  <Card.Text className="text-muted" style={{ flexGrow: 1 }}>
-                    {product.description}
+                  <Card.Text className="text-muted small flex-grow-1">
+                    {product.description.length > 80
+                      ? product.description.substring(0, 80) + "..."
+                      : product.description}
                   </Card.Text>
-                  <Button
-                    variant="primary"
-                    onClick={() => navigate(`/product/${product._id}`)}
-                  >
-                    view
-                  </Button>
+                  <div className="d-flex justify-content-between align-items-center mt-auto">
+                    <h5 className="fw-bold text-success m-0">${product.price}</h5>
+                    <Button
+                      variant="primary"
+                      className="rounded-pill px-4"
+                      onClick={() => navigate(`/product/${product._id}`)}
+                    >
+                      View
+                    </Button>
+                  </div>
                 </Card.Body>
               </Card>
             </Col>
