@@ -8,6 +8,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Products from "./pages/Products";
 import ProductPage from "./pages/ProductPage";
 import CartPage from "./pages/CartPage";
+import ProtectedRoutes from "./components/ProtectedRoutes";
 
 function App() {
   const { userInfo } = useSelector((state) => state.auth);
@@ -17,12 +18,14 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/products" element={<Products />} />
-        <Route path="/product/:productId" element={<ProductPage />}></Route>
-        <Route path="/user/cart" element={<CartPage />} />
+        <Route path="" element={<ProtectedRoutes />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/product/:productId" element={<ProductPage />}></Route>
+          <Route path="/user/cart" element={<CartPage />} />
+        </Route>
       </Routes>
     </>
   );

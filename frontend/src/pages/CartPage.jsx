@@ -23,7 +23,7 @@ function CartPage() {
   const { cartItems } = cart;
 
   const addToCartHandler = (product, qty) => {
-    dispatch(addToCart({ ...product, qty }));
+    dispatch(addToCart({ _id: product._id, qty }));
   };
 
   const removeCartHandler = (id) => {
@@ -72,7 +72,7 @@ function CartPage() {
                           }
                           className="cart-qty-dropdown"
                         >
-                          {[...Array(item.stock).keys()].map((x) => (
+                          {[...Array(Number(item.stock)).keys()].map((x) => (
                             <option key={x + 1} value={x + 1}>
                               {x + 1}
                             </option>

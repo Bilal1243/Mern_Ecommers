@@ -18,7 +18,10 @@ const reviewSchema = mongoose.Schema({
         type: mongoose.Types.ObjectId,
         required: true
     }
-})
+},
+    {
+        timestamps: true
+    })
 
 const productSchema = mongoose.Schema({
     productName: {
