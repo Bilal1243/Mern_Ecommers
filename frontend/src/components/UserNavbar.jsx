@@ -42,6 +42,9 @@ function UserNavbar() {
             <Nav.Link as={Link} to="/user/cart" className="mx-2 fw-semibold">
               Cart
             </Nav.Link>
+            <Nav.Link as={Link} to="/profile" className="mx-2 fw-semibold">
+              Profile
+            </Nav.Link>
 
             {/* Logout Button */}
             <Button
