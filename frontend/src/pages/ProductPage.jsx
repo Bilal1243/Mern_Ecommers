@@ -13,6 +13,7 @@ import {
   Button,
   Card,
   ListGroup,
+  
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../slices/cartSlice";
@@ -38,6 +39,9 @@ function ProductPage() {
   const dispatch = useDispatch();
 
   const addToCartHandler = () => {
+    if (!userInfo) {
+      return navigate("/login");
+    }
     dispatch(addToCart({ ...product, qty }));
     navigate("/user/cart");
   };
@@ -60,6 +64,7 @@ function ProductPage() {
       refetch();
     } catch (error) {
       console.log(error);
+      alert(error?.message || error?.data?.message)
     }
   };
 
@@ -103,51 +108,63 @@ function ProductPage() {
                   </span>
                 </ListGroup.Item>
 
-                {Number(product.stock) > 0 && (
-                  <ListGroup.Item>
-                    <Row className="align-items-center">
-                      <Col sm={4} className="fw-bold">
-                        Quantity:
-                      </Col>
-                      <Col sm={8} className="d-flex align-items-center">
-                        <Button
-                          variant="outline-secondary"
-                          onClick={() =>
-                            setQty((prev) => Math.max(prev - 1, 1))
-                          }
-                          disabled={qty <= 1}
-                        >
-                          -
-                        </Button>
+                {userInfo ? (
+                  <>
+                    {Number(product.stock) > 0 && (
+                      <ListGroup.Item>
+                        <Row className="align-items-center">
+                          <Col sm={4} className="fw-bold">
+                            Quantity:
+                          </Col>
+                          <Col sm={8} className="d-flex align-items-center">
+                            <Button
+                              variant="outline-secondary"
+                              onClick={() =>
+                                setQty((prev) => Math.max(prev - 1, 1))
+                              }
+                              disabled={qty <= 1}
+                            >
+                              -
+                            </Button>
 
-                        <span className="mx-3 fw-bold">{qty}</span>
+                            <span className="mx-3 fw-bold">{qty}</span>
 
-                        <Button
-                          variant="outline-secondary"
-                          onClick={() =>
-                            setQty((prev) =>
-                              Math.min(prev + 1, Number(product.stock))
-                            )
-                          }
-                          disabled={qty >= Number(product.stock)}
-                        >
-                          +
-                        </Button>
-                      </Col>
-                    </Row>
-                  </ListGroup.Item>
-                )}
+                            <Button
+                              variant="outline-secondary"
+                              onClick={() =>
+                                setQty((prev) =>
+                                  Math.min(prev + 1, Number(product.stock))
+                                )
+                              }
+                              disabled={qty >= Number(product.stock)}
+                            >
+                              +
+                            </Button>
+                          </Col>
+                        </Row>
+                      </ListGroup.Item>
+                    )}
 
-                <ListGroup.Item>
+                    <ListGroup.Item>
+                      <Button
+                        className="w-100 btn-lg"
+                        variant={product.stock > 0 ? "success" : "secondary"}
+                        disabled={product.stock === 0}
+                        onClick={addToCartHandler}
+                      >
+                        {product.stock > 0 ? "Add to Cart" : "Out of Stock"}
+                      </Button>
+                    </ListGroup.Item>
+                  </>
+                ) : (
                   <Button
                     className="w-100 btn-lg"
-                    variant={product.stock > 0 ? "success" : "secondary"}
-                    disabled={product.stock === 0}
-                    onClick={addToCartHandler}
+                    variant={"secondary"}
+                    onClick={() => navigate("/login")}
                   >
-                    {product.stock > 0 ? "Add to Cart" : "Out of Stock"}
+                    Login
                   </Button>
-                </ListGroup.Item>
+                )}
               </ListGroup>
             </Col>
           </Row>

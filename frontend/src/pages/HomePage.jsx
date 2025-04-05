@@ -8,11 +8,6 @@ function HomePage() {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!userInfo) {
-      navigate("/login");
-    }
-  });
 
   return (
     <>

@@ -3,9 +3,11 @@ import { Container, Nav, Navbar, Button } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useLogoutUserMutation } from "../slices/userApiSlice";
 import { logout } from "../slices/authSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 function UserNavbar() {
+  const { userInfo } = useSelector((state) => state.auth);
+
   const [logoutUser] = useLogoutUserMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -39,21 +41,37 @@ function UserNavbar() {
             <Nav.Link as={Link} to="/products" className="mx-2 fw-semibold">
               Products
             </Nav.Link>
-            <Nav.Link as={Link} to="/user/cart" className="mx-2 fw-semibold">
-              Cart
-            </Nav.Link>
-            <Nav.Link as={Link} to="/profile" className="mx-2 fw-semibold">
-              Profile
-            </Nav.Link>
+            {userInfo ? (
+              <>
+                <Nav.Link
+                  as={Link}
+                  to="/user/cart"
+                  className="mx-2 fw-semibold"
+                >
+                  Cart
+                </Nav.Link>
+                <Nav.Link as={Link} to="/profile" className="mx-2 fw-semibold">
+                  Profile
+                </Nav.Link>
 
-            {/* Logout Button */}
-            <Button
-              variant="outline-danger"
-              className="rounded-pill px-3 mx-2 fw-semibold"
-              onClick={logoutHandler}
-            >
-              Logout
-            </Button>
+                {/* Logout Button */}
+                <Button
+                  variant="outline-danger"
+                  className="rounded-pill px-3 mx-2 fw-semibold"
+                  onClick={logoutHandler}
+                >
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <Button
+                variant="outline-danger"
+                className="rounded-pill px-3 mx-2 fw-semibold"
+                onClick={() => navigate("/login")}
+              >
+                Login
+              </Button>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>

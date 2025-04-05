@@ -10,7 +10,7 @@ import { protect } from '../middlewares/authMiddleware.js'
 userRoute.post('/', authUser)
 userRoute.post('/register', registerUser)
 
-userRoute.get('/getProducts', protect, getAllProducts)
+userRoute.get('/getProducts', getAllProducts)
 
 userRoute.get('/logout', protect, userLogoutHandler)
 
