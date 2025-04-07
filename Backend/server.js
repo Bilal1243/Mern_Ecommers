@@ -6,6 +6,7 @@ import { notFound, errorHandler } from './middlewares/errorHandler.js'
 import cookieParser from 'cookie-parser'
 import adminRoute from './routes/adminRoutes.js'
 import productRoute from './routes/productRoutes.js'
+import orderRoute from './routes/orderRoutes.js'
 
 dotenv.config()
 
@@ -24,6 +25,7 @@ app.use(cookieParser())
 app.use('/api/users', userRoute) 
 app.use('/api/admin', adminRoute)
 app.use('/api/products', productRoute)
+app.use('/api/order',orderRoute)
  
 
 app.use(notFound)

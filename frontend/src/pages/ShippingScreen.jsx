@@ -1,22 +1,36 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import FormContainer from "../components/FormContainer";
 import CheckoutSteps from "../components/CheckoutSteps";
 import { useNavigate } from "react-router-dom";
 import UserNavbar from "../components/UserNavbar";
+import { useDispatch, useSelector } from "react-redux";
+import { saveShippingAddress } from "../slices/cartSlice";
 
 const ShippingScreen = () => {
+  const { shippingAddress } = useSelector((state) => state.cart);
   const [address, setAddress] = useState("123 Main St");
   const [city, setCity] = useState("New York");
   const [postalCode, setPostalCode] = useState("10001");
   const [country, setCountry] = useState("USA");
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const submitHandler = (e) => {
     e.preventDefault();
+    dispatch(saveShippingAddress({ address, city, postalCode, country }));
     navigate("/payment");
   };
+
+  useEffect(() => {
+    if (shippingAddress) {
+      setAddress(shippingAddress?.address);
+      setCity(shippingAddress.city);
+      setPostalCode(shippingAddress.postalCode);
+      setCountry(shippingAddress.country);
+    }
+  }, [shippingAddress]);
 
   return (
     <>

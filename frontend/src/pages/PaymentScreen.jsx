@@ -1,20 +1,30 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Form, Button, Col } from "react-bootstrap";
 import FormContainer from "../components/FormContainer";
 import CheckoutSteps from "../components/CheckoutSteps";
 import { useNavigate } from "react-router-dom";
 import UserNavbar from "../components/UserNavbar";
+import { useDispatch, useSelector } from "react-redux";
+import { savePaymentMethod } from "../slices/cartSlice";
 
 const PaymentScreen = () => {
-  const [paymentMethod, setPaymentMethod] = useState("PayPal");
+  const { shippingAddress } = useSelector((state) => state.cart);
+  const [paymentMethod, setPaymentMethod] = useState("Razorpay");
 
   const navigate = useNavigate();
+  const dispatch = useDispatch()
 
   const submitHandler = (e) => {
     e.preventDefault();
-    alert(`Selected Payment Method: ${paymentMethod}`);
+    dispatch(savePaymentMethod(paymentMethod))
     navigate("/placeorder");
   };
+
+  useEffect(() => {
+    if (!shippingAddress) {
+      navigate("/cart");
+    }
+  }, [navigate, shippingAddress]);
 
   return (
     <>
@@ -28,11 +38,11 @@ const PaymentScreen = () => {
             <Col className="my-2">
               <Form.Check
                 type="radio"
-                label="PayPal or Credit Card"
+                label="Razorpay"
                 id="PayPal"
                 name="paymentMethod"
-                value="PayPal"
-                checked={paymentMethod === "PayPal"}
+                value="Razorpay"
+                checked={paymentMethod === "Razorpay"}
                 onChange={(e) => setPaymentMethod(e.target.value)}
               />
               <Form.Check
