@@ -1,5 +1,7 @@
 import Orders from '../model/orderModel.js'
 import asyncHandler from '../middlewares/asyncHandler.js'
+import mongoose from 'mongoose'
+
 
 
 
@@ -16,7 +18,7 @@ const createOrder = asyncHandler(async (req, res) => {
             orderItems: cartItems.map((x) => ({
                 ...x,
                 product: x._id,
-                _id: undefined
+                _id: undefined,
             })),
             user: req.user._id,
             shippingAddress,
@@ -27,9 +29,8 @@ const createOrder = asyncHandler(async (req, res) => {
             shippingPrice,
             totalPrice
         })
-
         const createOrder = await order.save()
-
+        
         res.status(200).json(createOrder)
 
     }
@@ -69,9 +70,10 @@ const getOrders = asyncHandler(async (req, res) => {
 
 const getOrderById = asyncHandler(async (req, res) => {
 
+
     const order = await Orders.aggregate([
         {
-            $match: { _id: req.params.id }
+            $match: { _id: new mongoose.Types.ObjectId(req.params.id) }
         },
         {
             $lookup: {
@@ -84,7 +86,7 @@ const getOrderById = asyncHandler(async (req, res) => {
     ])
 
     if (order) {
-        res.json(order)
+        res.json(order[0])
     } else {
         res.status(404)
         throw new Error('order not found')

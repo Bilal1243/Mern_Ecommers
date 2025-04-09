@@ -6,7 +6,7 @@ import { createOrder, getMyOrders, getOrderById, getOrders, orderDeliver, update
 const orderRoute = express.Router()
 
 
-orderRoute.route('/').post(protect, createOrder).get(protect567yuy,h n, admin, getOrders)
+orderRoute.route('/').post(protect, createOrder).get(protect, admin, getOrders)
 
 orderRoute.route('/mine').get(protect, getMyOrders)
 

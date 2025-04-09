@@ -1,69 +1,41 @@
-import { Link } from 'react-router-dom';
-import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap';
-import Message from '../components/Message';
-import UserNavbar from '../components/UserNavbar';
+import { Link, useParams } from "react-router-dom";
+import { Row, Col, ListGroup, Image, Card, Button } from "react-bootstrap";
+import Message from "../components/Message";
+import UserNavbar from "../components/UserNavbar";
+import { useGetOrderByIdQuery } from "../slices/orderApiSlice";
 
 const OrderScreen = () => {
-  const order = {
-    _id: '123456',
-    user: {
-      name: 'John Doe',
-      email: 'john@example.com',
-    },
-    shippingAddress: {
-      address: '123 Street',
-      city: 'CityName',
-      postalCode: '123456',
-      country: 'CountryName',
-    },
-    paymentMethod: 'PayPal',
-    isPaid: false,
-    paidAt: null,
-    isDelivered: false,
-    deliveredAt: null,
-    orderItems: [
-      {
-        name: 'Sample Product',
-        qty: 2,
-        image: '/images/sample.jpg',
-        price: 50,
-        product: '1',
-      },
-    ],
-    itemsPrice: 100,
-    shippingPrice: 10,
-    taxPrice: 5,
-    totalPrice: 115,
-  };
+  const { id } = useParams();
+
+  const { isLoading, data: order, error, refetch } = useGetOrderByIdQuery(id);
 
   return (
     <>
-    <UserNavbar/>
-      <h1 className='mb-4'>Order {order._id}</h1>
+      <UserNavbar />
+      <h1 className="mb-4">Order {order?._id}</h1>
       <Row>
         <Col md={8}>
-          <ListGroup variant='flush'>
+          <ListGroup variant="flush">
             <ListGroup.Item>
               <h2>Shipping</h2>
               <p>
-                <strong>Name: </strong> {order.user.name}
+                <strong>Name: </strong> {order?.userDetails[0]?.name}
               </p>
               <p>
-                <strong>Email: </strong>{' '}
-                <a href={`mailto:${order.user.email}`}>{order.user.email}</a>
+                <strong>Email: </strong>{" "}
+                <a href={`mailto:${order?.userDetails[0].email}`}>{order?.userDetails[0].email}</a>
               </p>
               <p>
-                <strong>Address:</strong>{' '}
-                {order.shippingAddress.address}, {order.shippingAddress.city},{' '}
-                {order.shippingAddress.postalCode},{' '}
-                {order.shippingAddress.country}
+                <strong>Address:</strong> {order?.shippingAddress.address},{" "}
+                {order?.shippingAddress.city}, {order?.shippingAddress.postalCode}
+                , {order?.shippingAddress.country}
               </p>
-              {order.isDelivered ? (
-                <Message variant='success'>
-                  Delivered on {order.deliveredAt}
+              {order?.isDelivered ? (
+                <Message variant="success">
+                  Delivered on {order?.deliveredAt}
                 </Message>
               ) : (
-                <Message variant='danger'>Not Delivered</Message>
+                <Message variant="danger">Not Delivered</Message>
               )}
             </ListGroup.Item>
 
@@ -71,39 +43,39 @@ const OrderScreen = () => {
               <h2>Payment Method</h2>
               <p>
                 <strong>Method: </strong>
-                {order.paymentMethod}
+                {order?.paymentMethod}
               </p>
-              {order.isPaid ? (
-                <Message variant='success'>Paid on {order.paidAt}</Message>
+              {order?.isPaid ? (
+                <Message variant="success">Paid on {order?.paidAt}</Message>
               ) : (
-                <Message variant='danger'>Not Paid</Message>
+                <Message variant="danger">Not Paid</Message>
               )}
             </ListGroup.Item>
 
             <ListGroup.Item>
               <h2>Order Items</h2>
-              {order.orderItems.length === 0 ? (
+              {order?.orderItems.length === 0 ? (
                 <Message>Order is empty</Message>
               ) : (
-                <ListGroup variant='flush'>
-                  {order.orderItems.map((item, index) => (
+                <ListGroup variant="flush">
+                  {order?.orderItems.map((item, index) => (
                     <ListGroup.Item key={index}>
-                      <Row className='align-items-center'>
+                      <Row className="align-items-center">
                         <Col md={1}>
                           <Image
-                            src={item.image}
-                            alt={item.name}
+                            src={item?.productImage}
+                            alt={item?.productName}
                             fluid
                             rounded
                           />
                         </Col>
                         <Col>
-                          <Link to={`/product/${item.product}`}>
+                          <Link to={`/product/${item?.product}`}>
                             {item.name}
                           </Link>
                         </Col>
                         <Col md={4}>
-                          {item.qty} x ${item.price} = ${item.qty * item.price}
+                          {item?.qty} x ${item.price} = ${item.qty * item.price}
                         </Col>
                       </Row>
                     </ListGroup.Item>
@@ -115,47 +87,47 @@ const OrderScreen = () => {
         </Col>
 
         <Col md={4}>
-          <Card className='shadow-sm rounded-4'>
-            <ListGroup variant='flush'>
+          <Card className="shadow-sm rounded-4">
+            <ListGroup variant="flush">
               <ListGroup.Item>
-                <h2 className='text-center'>Order Summary</h2>
+                <h2 className="text-center">Order Summary</h2>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Items</Col>
-                  <Col>${order.itemsPrice}</Col>
+                  <Col>${order?.itemPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Shipping</Col>
-                  <Col>${order.shippingPrice}</Col>
+                  <Col>${order?.shippingPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Tax</Col>
-                  <Col>${order.taxPrice}</Col>
+                  <Col>${order?.taxPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Total</Col>
-                  <Col>${order.totalPrice}</Col>
+                  <Col>${order?.totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
 
-              {!order.isPaid && (
+              {!order?.isPaid && (
                 <ListGroup.Item>
-                  <Button type='button' className='btn-block w-100' disabled>
+                  <Button type="button" className="btn-block w-100" disabled>
                     Proceed to Payment
                   </Button>
                 </ListGroup.Item>
               )}
 
-              {order.isPaid && !order.isDelivered && (
+              {order?.isPaid && !order?.isDelivered && (
                 <ListGroup.Item>
-                  <Button type='button' className='btn-block w-100' disabled>
+                  <Button type="button" className="btn-block w-100" disabled>
                     Mark as Delivered
                   </Button>
                 </ListGroup.Item>
