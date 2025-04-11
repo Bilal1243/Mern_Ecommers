@@ -1,8 +1,7 @@
 import Users from '../model/userModel.js'
 import bcrypt from 'bcrypt'
 import asyncHandler from '../middlewares/asyncHandler.js'
-import jwt from 'jsonwebtoken'
-
+import generateToken from '../utils/generateToken.js'
 
 const registerUser = asyncHandler(async (req, res) => {
 
@@ -48,14 +47,7 @@ const authUser = asyncHandler(async (req, res) => {
 
     if (user && (await user.matchPassword(password))) {
 
-        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' })
-
-        res.cookie('jwt', token, {
-            httpOnly: true,
-            secure: false,
-            sameSite: 'strict',
-            maxAge: 24 * 60 * 60 * 1000
-        })
+        generateToken(res, user._id)
 
         res.json({
             _id: user._id,
@@ -73,6 +65,41 @@ const authUser = asyncHandler(async (req, res) => {
 })
 
 
+const updateUserProfile = asyncHandler(async (req, res) => {
+
+    const { name, email, password } = req.body
+
+    const user = await Users.findById(req.user._id)
+
+
+    const salt = await bcrypt.genSalt(10)
+    const bcryptedPassword = await bcrypt.hash(password, salt)
+
+    if (user) {
+        user.name = name || user.name
+        user.email = email || user.email
+        if (password) {
+            user.password = bcryptedPassword
+        }
+
+        const updatedUser = await user.save()
+
+        res.status(200).json({
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            isAdmin: user.isAdmin
+        })
+
+    }
+    else {
+        res.status(404)
+        throw new Error('user not found')
+    }
+
+})
+
+
 const userLogoutHandler = asyncHandler(async (req, res) => {
     res.cookie("jwt", "", {
         httpOnly: true,
@@ -84,4 +111,4 @@ const userLogoutHandler = asyncHandler(async (req, res) => {
 
 
 
-export { registerUser, authUser, userLogoutHandler }
+export { registerUser, authUser, updateUserProfile, userLogoutHandler }

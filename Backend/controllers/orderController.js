@@ -30,7 +30,7 @@ const createOrder = asyncHandler(async (req, res) => {
             totalPrice
         })
         const createOrder = await order.save()
-        
+
         res.status(200).json(createOrder)
 
     }
@@ -40,7 +40,9 @@ const createOrder = asyncHandler(async (req, res) => {
 
 const getMyOrders = asyncHandler(async (req, res) => {
 
+    const orders = await Orders.find({ user: req.user._id })
 
+    res.json(orders)
 
 })
 

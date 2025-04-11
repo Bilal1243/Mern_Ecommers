@@ -25,10 +25,10 @@ const ShippingScreen = () => {
 
   useEffect(() => {
     if (shippingAddress) {
-      setAddress(shippingAddress?.address);
-      setCity(shippingAddress.city);
-      setPostalCode(shippingAddress.postalCode);
-      setCountry(shippingAddress.country);
+      setAddress(shippingAddress?.address || "123 Main St");
+      setCity(shippingAddress.city || "New York");
+      setPostalCode(shippingAddress.postalCode || "10001");
+      setCountry(shippingAddress.country || "USA");
     }
   }, [shippingAddress]);
 

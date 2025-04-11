@@ -1,13 +1,32 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { Row, Col, ListGroup, Image, Card, Button } from "react-bootstrap";
 import Message from "../components/Message";
 import UserNavbar from "../components/UserNavbar";
-import { useGetOrderByIdQuery } from "../slices/orderApiSlice";
+import {
+  useGetOrderByIdQuery,
+  useOrderDeliverMutation,
+} from "../slices/orderApiSlice";
+import { useSelector } from "react-redux";
 
 const OrderScreen = () => {
   const { id } = useParams();
 
+  const { userInfo } = useSelector((state) => state.auth);
+
   const { isLoading, data: order, error, refetch } = useGetOrderByIdQuery(id);
+
+  const [isDeliverHandler] = useOrderDeliverMutation();
+
+  const navigate = useNavigate();
+
+  const orderDeliverHandler = async () => {
+    try {
+      await isDeliverHandler(id).unwrap();
+      refetch();
+    } catch (error) {
+      console.log(error?.message || error?.data?.message);
+    }
+  };
 
   return (
     <>
@@ -23,12 +42,15 @@ const OrderScreen = () => {
               </p>
               <p>
                 <strong>Email: </strong>{" "}
-                <a href={`mailto:${order?.userDetails[0].email}`}>{order?.userDetails[0].email}</a>
+                <a href={`mailto:${order?.userDetails[0].email}`}>
+                  {order?.userDetails[0].email}
+                </a>
               </p>
               <p>
                 <strong>Address:</strong> {order?.shippingAddress.address},{" "}
-                {order?.shippingAddress.city}, {order?.shippingAddress.postalCode}
-                , {order?.shippingAddress.country}
+                {order?.shippingAddress.city},{" "}
+                {order?.shippingAddress.postalCode},{" "}
+                {order?.shippingAddress.country}
               </p>
               {order?.isDelivered ? (
                 <Message variant="success">
@@ -117,21 +139,32 @@ const OrderScreen = () => {
                 </Row>
               </ListGroup.Item>
 
-              {!order?.isPaid && (
+              {userInfo && !userInfo.isAdmin && (
                 <ListGroup.Item>
-                  <Button type="button" className="btn-block w-100" disabled>
-                    Proceed to Payment
+                  <Button
+                    type="button"
+                    className="btn-block w-100"
+                    onClick={() => navigate("/")}
+                  >
+                    Home
                   </Button>
                 </ListGroup.Item>
               )}
 
-              {order?.isPaid && !order?.isDelivered && (
-                <ListGroup.Item>
-                  <Button type="button" className="btn-block w-100" disabled>
-                    Mark as Delivered
-                  </Button>
-                </ListGroup.Item>
-              )}
+              {userInfo &&
+                userInfo.isAdmin &&
+                order?.isPaid &&
+                !order?.isDelivered && (
+                  <ListGroup.Item>
+                    <Button
+                      type="button"
+                      className="btn-block w-100"
+                      onClick={orderDeliverHandler}
+                    >
+                      Mark as Delivered
+                    </Button>
+                  </ListGroup.Item>
+                )}
             </ListGroup>
           </Card>
         </Col>

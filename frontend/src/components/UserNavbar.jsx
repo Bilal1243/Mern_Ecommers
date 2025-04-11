@@ -38,9 +38,6 @@ function UserNavbar() {
             <Nav.Link as={Link} to="/" className="mx-2 fw-semibold">
               Home
             </Nav.Link>
-            <Nav.Link as={Link} to="/products" className="mx-2 fw-semibold">
-              Products
-            </Nav.Link>
             {userInfo ? (
               <>
                 <Nav.Link

@@ -14,6 +14,7 @@ import ShippingScreen from "./pages/ShippingScreen";
 import PaymentScreen from "./pages/PaymentScreen";
 import PlaceOrderScreen from "./pages/PlaceOrderScreen";
 import ProfileScreen from "./pages/ProfileScreen";
+import PrivateRoutes from "./components/PrivateRoutes";
 
 function App() {
   const { userInfo } = useSelector((state) => state.auth);
@@ -26,14 +27,18 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/" element={<HomePage />} />
-        <Route path="/products" element={<Products />} />
         <Route path="/product/:productId" element={<ProductPage />}></Route>
         <Route path="/user/cart" element={<CartPage />} />
-        <Route path="/shipping" element={<ShippingScreen />} />
-        <Route path="/payment" element={<PaymentScreen />} />
-        <Route path="/placeorder" element={<PlaceOrderScreen />} />
-        <Route path="/order/:id" element={<OrderScreen />} />
-        <Route path="/profile" element={<ProfileScreen />} />
+
+        <Route path="" element={<PrivateRoutes />}>
+          <Route path="/shipping" element={<ShippingScreen />} />
+          <Route path="/payment" element={<PaymentScreen />} />
+          <Route path="/placeorder" element={<PlaceOrderScreen />} />
+          <Route path="/order/:id" element={<OrderScreen />} />
+          <Route path="/profile" element={<ProfileScreen />} />
+        </Route>
+
+        
       </Routes>
     </>
   );
