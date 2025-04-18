@@ -11,7 +11,6 @@ import {
 import Message from "../components/Message";
 import CheckoutSteps from "../components/CheckoutSteps";
 import { useNavigate } from "react-router-dom";
-import UserNavbar from "../components/UserNavbar";
 import { useSelector, useDispatch } from "react-redux";
 import {
   useCreateOrderMutation,
@@ -66,7 +65,6 @@ const PlaceOrderScreen = () => {
 
   return (
     <>
-      <UserNavbar />
       <CheckoutSteps step1 step2 step3 step4 />
       <Container className="my-5 px-3">
         <Row className="gy-4">

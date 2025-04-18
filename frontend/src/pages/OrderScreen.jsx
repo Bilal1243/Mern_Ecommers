@@ -1,7 +1,6 @@
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { Row, Col, ListGroup, Image, Card, Button } from "react-bootstrap";
 import Message from "../components/Message";
-import UserNavbar from "../components/UserNavbar";
 import {
   useGetOrderByIdQuery,
   useOrderDeliverMutation,
@@ -30,7 +29,6 @@ const OrderScreen = () => {
 
   return (
     <>
-      <UserNavbar />
       <h1 className="mb-4">Order {order?._id}</h1>
       <Row>
         <Col md={8}>

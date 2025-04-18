@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useGetProductsQuery } from "../../slices/adminApiSlice";
-import AdminNavbar from "../../components/AdminComponents/AdminNavbar";
 import { Table, Row, Col, Button, Alert, Spinner, Card } from "react-bootstrap";
 import { FaEdit, FaPlus } from "react-icons/fa";
 
@@ -11,7 +10,6 @@ function AdminProductsPage() {
 
   return (
     <>
-      <AdminNavbar />
 
       <div className="container mt-4">
         <Row className="align-items-center">

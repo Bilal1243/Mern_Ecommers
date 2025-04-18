@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import UserNavbar from "../components/UserNavbar";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import {
   useGetProductQuery,
@@ -70,7 +69,6 @@ function ProductPage() {
 
   return (
     <>
-      <UserNavbar />
       <div className="container mt-5">
         <Card className="shadow-lg rounded-lg p-4">
           <Row>

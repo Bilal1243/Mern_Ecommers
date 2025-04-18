@@ -1,5 +1,4 @@
 import React from "react";
-import UserNavbar from "../components/UserNavbar";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Row,
@@ -36,7 +35,6 @@ function CartPage() {
 
   return (
     <>
-      <UserNavbar />
       <div className="container mt-4">
         <Row>
           <Col md={8}>

@@ -3,7 +3,6 @@ import { Form, Button, Col } from "react-bootstrap";
 import FormContainer from "../components/FormContainer";
 import CheckoutSteps from "../components/CheckoutSteps";
 import { useNavigate } from "react-router-dom";
-import UserNavbar from "../components/UserNavbar";
 import { useDispatch, useSelector } from "react-redux";
 import { savePaymentMethod } from "../slices/cartSlice";
 
@@ -28,7 +27,6 @@ const PaymentScreen = () => {
 
   return (
     <>
-      <UserNavbar />
       <FormContainer>
         <CheckoutSteps step1 step2 step3 />
         <h1 className="mb-4">Payment Method</h1>

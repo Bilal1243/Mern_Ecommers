@@ -14,7 +14,6 @@ import {
   Alert,
   Container,
 } from "react-bootstrap";
-import AdminNavbar from "../../components/AdminComponents/AdminNavbar";
 
 function AdminEditProduct() {
   const { id } = useParams();
@@ -64,7 +63,6 @@ function AdminEditProduct() {
 
   return (
     <>
-      <AdminNavbar />
       <Container className="mt-5">
         <Card className="shadow-lg p-4">
           <h2 className="text-center text-primary mb-4">Edit Product</h2>

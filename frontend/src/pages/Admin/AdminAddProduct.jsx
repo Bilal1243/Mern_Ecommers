@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Button, Col, Form, InputGroup, Row, Container, Card, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useAddProductMutation } from "../../slices/adminApiSlice";
-import AdminNavbar from "../../components/AdminComponents/AdminNavbar";
 
 function AdminAddProduct() {
   const [productName, setProductName] = useState("");
@@ -45,7 +44,6 @@ function AdminAddProduct() {
 
   return (
     <>
-      <AdminNavbar />
       <Container className="mt-5 d-flex justify-content-center">
         <Card className="p-4 shadow-sm w-100" style={{ maxWidth: "600px" }}>
           <h3 className="text-center mb-3">Add New Product</h3>

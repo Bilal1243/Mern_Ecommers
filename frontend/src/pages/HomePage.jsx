@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../components/UserNavbar";
 import { Button, Card, Container, Row, Col } from "react-bootstrap";
 import { useGetProductsQuery } from "../slices/userApiSlice";
 
@@ -14,7 +13,6 @@ function HomePage() {
 
   return (
     <>
-      <Navbar />
       <Container className="my-5">
         <h2 className="text-center fw-bold mb-4">Explore Our Products</h2>
         <Row className="g-4">

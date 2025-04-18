@@ -3,7 +3,6 @@ import { Form, Button } from "react-bootstrap";
 import FormContainer from "../components/FormContainer";
 import CheckoutSteps from "../components/CheckoutSteps";
 import { useNavigate } from "react-router-dom";
-import UserNavbar from "../components/UserNavbar";
 import { useDispatch, useSelector } from "react-redux";
 import { saveShippingAddress } from "../slices/cartSlice";
 
@@ -34,7 +33,6 @@ const ShippingScreen = () => {
 
   return (
     <>
-      <UserNavbar />
       <FormContainer>
         <CheckoutSteps step1 step2 />
         <h1 className="mb-4">Shipping</h1>
