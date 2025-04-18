@@ -49,16 +49,7 @@ const getMyOrders = asyncHandler(async (req, res) => {
 
 const getOrders = asyncHandler(async (req, res) => {
 
-    const order = await Orders.aggregate([
-        {
-            $lookup: {
-                from: 'users',
-                localField: 'user',
-                foreignField: '_id',
-                as: 'userDetails'
-            }
-        }
-    ])
+    const order = await Orders.find().populate('user', 'name email')
 
     if (order) {
         res.json(order)
@@ -73,22 +64,10 @@ const getOrders = asyncHandler(async (req, res) => {
 const getOrderById = asyncHandler(async (req, res) => {
 
 
-    const order = await Orders.aggregate([
-        {
-            $match: { _id: new mongoose.Types.ObjectId(req.params.id) }
-        },
-        {
-            $lookup: {
-                from: 'users',
-                localField: 'user',
-                foreignField: '_id',
-                as: 'userDetails'
-            }
-        }
-    ])
+    const order = await Orders.findById(req.params.id).populate('user', 'name email')
 
     if (order) {
-        res.json(order[0])
+        res.json(order)
     } else {
         res.status(404)
         throw new Error('order not found')

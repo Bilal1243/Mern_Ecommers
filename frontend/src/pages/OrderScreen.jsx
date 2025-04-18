@@ -36,12 +36,12 @@ const OrderScreen = () => {
             <ListGroup.Item>
               <h2>Shipping</h2>
               <p>
-                <strong>Name: </strong> {order?.userDetails[0]?.name}
+                <strong>Name: </strong> {order?.user?.name}
               </p>
               <p>
                 <strong>Email: </strong>{" "}
-                <a href={`mailto:${order?.userDetails[0].email}`}>
-                  {order?.userDetails[0].email}
+                <a href={`mailto:${order?.user.email}`}>
+                  {order?.user.email}
                 </a>
               </p>
               <p>

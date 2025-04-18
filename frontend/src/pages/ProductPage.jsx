@@ -24,7 +24,7 @@ function ProductPage() {
 
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
-  const [qty, setQty] = useState(0);
+  const [qty, setQty] = useState(1);
   const { productId } = useParams();
   const {
     data: product,
@@ -42,7 +42,7 @@ function ProductPage() {
       return navigate("/login");
     }
     dispatch(addToCart({ ...product, qty }));
-    navigate("/user/cart");
+    navigate("/cart");
   };
 
   if (isLoading)

@@ -3,7 +3,8 @@ import mongoose from "mongoose";
 const orderSchema = mongoose.Schema({
     user: {
         type: mongoose.Types.ObjectId,
-        required: true
+        required: true,
+        ref: 'Users'
     },
     orderItems: [
         {
@@ -11,7 +12,7 @@ const orderSchema = mongoose.Schema({
             qty: { type: Number, required: true },
             price: { type: Number, required: true },
             productImage: { type: String, required: true },
-            product: { type: mongoose.Types.ObjectId, required: true }
+            product: { type: mongoose.Types.ObjectId, required: true, ref: 'Products' }
         }
     ],
     shippingAddress: {
@@ -70,6 +71,6 @@ const orderSchema = mongoose.Schema({
     })
 
 
-const Orders = mongoose.model('orders',orderSchema)
+const Orders = mongoose.model('orders', orderSchema)
 
 export default Orders

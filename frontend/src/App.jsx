@@ -5,7 +5,6 @@ import LoginPage from "./pages/LoginPage";
 import "bootstrap/dist/css/bootstrap.min.css";
 import ProductPage from "./pages/ProductPage";
 import CartPage from "./pages/CartPage";
-import ProtectedRoutes from "./components/ProtectedRoutes";
 import OrderScreen from "./pages/OrderScreen";
 import ShippingScreen from "./pages/ShippingScreen";
 import PaymentScreen from "./pages/PaymentScreen";
@@ -19,6 +18,8 @@ import { Container } from "react-bootstrap";
 import Header from "./components/Header";
 import UserListScreen from "./pages/Admin/UserListScreen";
 import UserEditScreen from "./pages/Admin/UserEditScreen";
+import OrderListScreen from "./pages/Admin/OrderListScreen";
+import AdminPrivateRoutes from "./components/AdminPrivateRoutes";
 
 function App() {
   return (
@@ -41,14 +42,17 @@ function App() {
               <Route path="/profile" element={<ProfileScreen />} />
             </Route>
 
-            <Route
-              path="/admin/products"
-              element={<AdminProductsPage />}
-            ></Route>
-            <Route path="/addproduct" element={<AdminAddProduct />} />
-            <Route path="/editProduct/:id" element={<AdminEditProduct />} />
-            <Route path="/admin/userlist" element={<UserListScreen />} />
-            <Route path="/admin/user/:id/edit" element={<UserEditScreen />} />
+            <Route path="" element={<AdminPrivateRoutes />}>
+              <Route
+                path="/admin/products"
+                element={<AdminProductsPage />}
+              ></Route>
+              <Route path="/addproduct" element={<AdminAddProduct />} />
+              <Route path="/editProduct/:id" element={<AdminEditProduct />} />
+              <Route path="/admin/userlist" element={<UserListScreen />} />
+              <Route path="/admin/user/:id/edit" element={<UserEditScreen />} />
+              <Route path="/admin/orderlist" element={<OrderListScreen />} />
+            </Route>
           </Routes>
         </Container>
       </main>
